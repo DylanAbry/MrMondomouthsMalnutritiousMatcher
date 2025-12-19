@@ -119,6 +119,28 @@ foreach (Card c in cpuCards)
 
 - Cards with lower future payoff are discarded. The deck, current cards in the CPU's hand and the cards in the player's hand and dicarded are all examined to determined which card would be the best card to strategically discard.
 
+private float EstimatePairProbability()
+{
+    int possible = 0;
+    int remaining = deckOrder.Count;
+
+    foreach (Card deckCard in deckOrder)
+    {
+        foreach (Card held in cpuCards)
+        {
+            if (ArePair(deckCard, held))
+            {
+                possible++;
+                break;
+            }
+        }
+    }
+
+    return (remaining == 0) ? 0f : (float)possible / remaining;
+}
+
+- This evaluates potential future matches with cards not yet selected from the deck to determine how useful each of the current cards on hand can be, helping decide which card would be best to discard.
+
  9.) Controlled Mistakes (CPU Discard Randomness)
 
  [SerializeField] private float cpuDiscardRandomness = 0.25f;
